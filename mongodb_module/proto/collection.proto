@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+
+package collection;
+
+service CollectionServer {
+  rpc InsertOne (DocRequest) returns (IdResponse);
+  rpc InsertMany (DocListRequest) returns (IdListResponse);
+  rpc GetTag (TagRequest) returns (DocResponse);
+  rpc GetOne (IdRequest) returns (DocResponse);
+  rpc GetMany (QueryRequest) returns (DocListResponse);
+  rpc UpdateMany (UpdateManyRequest) returns (CountResponse);
+  rpc DeleteMany (QueryRequest) returns (CountResponse);
+  rpc Aggregate (AggregateRequest) returns (DocListResponse);
+}
+
+message IdRequest {
+  string doc_id = 1;
+}
+
+message DocRequest {
+  google.protobuf.Struct doc = 1;
+}
+
+message DocListRequest {
+  repeated google.protobuf.Struct doc_list = 1;
+}
+
+message TagRequest {
+  repeated string field_list = 1;
+  optional google.protobuf.Struct query = 2;
+}
+
+message QueryRequest {
+  google.protobuf.Struct query = 1;
+  optional string project_model = 2;
+  repeated string sort = 3;
+  optional int32 page_size = 4;
+  optional int32 page_num = 5;
+}
+
+message UpdateRequest {
+  google.protobuf.Struct query = 1;
+  optional google.protobuf.Struct set = 2;
+  optional google.protobuf.Struct unset = 3;
+  optional google.protobuf.Struct push = 4;
+  optional google.protobuf.Struct array_filter = 5;
+  optional bool upsert = 6;
+}
+
+message UpdateManyRequest {
+  repeated UpdateRequest update_request_list = 1;
+}
+
+message AggregateRequest {
+  repeated google.protobuf.Struct pipeline  = 1;
+}
+
+message IdResponse {
+  string doc_id = 1;
+  int32 code = 2;
+  string message = 3;
+}
+
+message IdListResponse {
+  repeated string doc_id_list = 1;
+  int32 code = 2;
+  string message = 3;
+}
+
+message DocResponse {
+  google.protobuf.Struct doc = 1;
+  int32 code = 2;
+  string message = 3;
+}
+
+message DocListResponse {
+  repeated google.protobuf.Struct doc_list = 1;
+  int32 total_count = 2;
+  int32 code = 3;
+  string message = 4;
+}
+
+message CountResponse {
+  int32 count = 1;
+  int32 code = 2;
+  string message = 3;
+}
