@@ -5,7 +5,7 @@ import warnings
 
 from mongodb_module.proto import collection_pb2 as mongodb__module_dot_proto_dot_collection__pb2
 
-GRPC_GENERATED_VERSION = '1.67.1'
+GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -59,9 +59,19 @@ class CollectionServerStub(object):
                 request_serializer=mongodb__module_dot_proto_dot_collection__pb2.QueryRequest.SerializeToString,
                 response_deserializer=mongodb__module_dot_proto_dot_collection__pb2.DocListResponse.FromString,
                 _registered_method=True)
+        self.UpdateOne = channel.unary_unary(
+                '/collection.CollectionServer/UpdateOne',
+                request_serializer=mongodb__module_dot_proto_dot_collection__pb2.UpdateRequest.SerializeToString,
+                response_deserializer=mongodb__module_dot_proto_dot_collection__pb2.DocResponse.FromString,
+                _registered_method=True)
         self.UpdateMany = channel.unary_unary(
                 '/collection.CollectionServer/UpdateMany',
                 request_serializer=mongodb__module_dot_proto_dot_collection__pb2.UpdateManyRequest.SerializeToString,
+                response_deserializer=mongodb__module_dot_proto_dot_collection__pb2.CountResponse.FromString,
+                _registered_method=True)
+        self.DeleteOne = channel.unary_unary(
+                '/collection.CollectionServer/DeleteOne',
+                request_serializer=mongodb__module_dot_proto_dot_collection__pb2.QueryRequest.SerializeToString,
                 response_deserializer=mongodb__module_dot_proto_dot_collection__pb2.CountResponse.FromString,
                 _registered_method=True)
         self.DeleteMany = channel.unary_unary(
@@ -109,7 +119,19 @@ class CollectionServerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateOne(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def UpdateMany(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteOne(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -155,9 +177,19 @@ def add_CollectionServerServicer_to_server(servicer, server):
                     request_deserializer=mongodb__module_dot_proto_dot_collection__pb2.QueryRequest.FromString,
                     response_serializer=mongodb__module_dot_proto_dot_collection__pb2.DocListResponse.SerializeToString,
             ),
+            'UpdateOne': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateOne,
+                    request_deserializer=mongodb__module_dot_proto_dot_collection__pb2.UpdateRequest.FromString,
+                    response_serializer=mongodb__module_dot_proto_dot_collection__pb2.DocResponse.SerializeToString,
+            ),
             'UpdateMany': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateMany,
                     request_deserializer=mongodb__module_dot_proto_dot_collection__pb2.UpdateManyRequest.FromString,
+                    response_serializer=mongodb__module_dot_proto_dot_collection__pb2.CountResponse.SerializeToString,
+            ),
+            'DeleteOne': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteOne,
+                    request_deserializer=mongodb__module_dot_proto_dot_collection__pb2.QueryRequest.FromString,
                     response_serializer=mongodb__module_dot_proto_dot_collection__pb2.CountResponse.SerializeToString,
             ),
             'DeleteMany': grpc.unary_unary_rpc_method_handler(
@@ -317,6 +349,33 @@ class CollectionServer(object):
             _registered_method=True)
 
     @staticmethod
+    def UpdateOne(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/collection.CollectionServer/UpdateOne',
+            mongodb__module_dot_proto_dot_collection__pb2.UpdateRequest.SerializeToString,
+            mongodb__module_dot_proto_dot_collection__pb2.DocResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def UpdateMany(request,
             target,
             options=(),
@@ -332,6 +391,33 @@ class CollectionServer(object):
             target,
             '/collection.CollectionServer/UpdateMany',
             mongodb__module_dot_proto_dot_collection__pb2.UpdateManyRequest.SerializeToString,
+            mongodb__module_dot_proto_dot_collection__pb2.CountResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteOne(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/collection.CollectionServer/DeleteOne',
+            mongodb__module_dot_proto_dot_collection__pb2.QueryRequest.SerializeToString,
             mongodb__module_dot_proto_dot_collection__pb2.CountResponse.FromString,
             options,
             channel_credentials,

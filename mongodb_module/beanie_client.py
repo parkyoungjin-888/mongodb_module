@@ -111,6 +111,27 @@ class CollectionClient:
             res['doc_list'] = [self.collection_model(**doc).model_dump(by_alias=True) for doc in res['doc_list']]
         return res
 
+    @grpc_client_error_handler(pb2.DocResponse())
+    async def update_one(self, query: dict, set: dict = None, unset: dict = None, push: dict = None,
+                         array_filter: dict = None, upsert: bool = None) -> dict:
+        update_req = pb2.UpdateRequest()
+        update_req.query = query
+        if set is None and unset is None and push is None:
+            raise ValueError('set or unset or push be required')
+        if set is not None:
+            update_req.set = set
+        if unset is not None:
+            update_req.unset = unset
+        if push is not None:
+            update_req.push = push
+        if array_filter is not None:
+            update_req.array_filter = array_filter
+        if upsert is not None:
+            update_req.upsert = upsert
+        res = await self.stub.UpdateOne(update_req)
+        res = MessageToDict(res, always_print_fields_with_no_presence=True, preserving_proto_field_name=True)
+        return res
+
     @grpc_client_error_handler(pb2.CountResponse())
     async def update_many(self, query: dict, set: dict=None, unset: dict=None, push: dict=None,
                           array_filter: dict=None, upsert: bool=None) -> dict:
@@ -131,6 +152,14 @@ class CollectionClient:
             update_req.upsert = upsert
         update_many_req.update_request_list.append(update_req)
         res = await self.stub.UpdateMany(update_many_req)
+        res = MessageToDict(res, always_print_fields_with_no_presence=True, preserving_proto_field_name=True)
+        return res
+
+    @grpc_client_error_handler(pb2.CountResponse())
+    async def delete_one(self, query: dict) -> dict:
+        query_req = pb2.QueryRequest()
+        query_req.query = query
+        res = await self.stub.DeleteOne(query_req)
         res = MessageToDict(res, always_print_fields_with_no_presence=True, preserving_proto_field_name=True)
         return res
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mongodb-module"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = ["parkyoungjin-888 <pyj8813@gmail.com>"]
 readme = "README.md"

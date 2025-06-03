@@ -10,7 +10,9 @@ service CollectionServer {
   rpc GetTag (TagRequest) returns (DocResponse);
   rpc GetOne (IdRequest) returns (DocResponse);
   rpc GetMany (QueryRequest) returns (DocListResponse);
+  rpc UpdateOne (UpdateRequest) returns (DocResponse);
   rpc UpdateMany (UpdateManyRequest) returns (CountResponse);
+  rpc DeleteOne (QueryRequest) returns (CountResponse);
   rpc DeleteMany (QueryRequest) returns (CountResponse);
   rpc Aggregate (AggregateRequest) returns (DocListResponse);
 }
@@ -51,6 +53,7 @@ message UpdateRequest {
 
 message UpdateManyRequest {
   repeated UpdateRequest update_request_list = 1;
+  optional bool ordered = 2;
 }
 
 message AggregateRequest {
