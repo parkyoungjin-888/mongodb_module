@@ -6,8 +6,10 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 class BaseDocument(Document):
     @classmethod
-    async def find_with_paginate(cls, query: dict, sort: list[str] = None, project_model: Type[BaseModel] = None,
-                                 page_size: int = None, page_num: int = None) -> dict:
+    async def find_with_paginate(cls, query: dict, sort: list[str] = None,
+                                 project_model: Type[BaseModel] = None,
+                                 page_size: int = None, page_num: int = None,
+                                 stringify_extra_type: bool = False) -> dict:
         default_sort = ['-_id']
         if sort is None or ('+_id' not in sort and '-_id' not in sort):
             sort = (sort or []) + default_sort
@@ -21,7 +23,7 @@ class BaseDocument(Document):
             cursor = cursor.skip(skip).limit(page_size)
 
         doc_list = await cursor.to_list()
-        doc_list = [doc.model_dump(by_alias=True) for doc in doc_list]
+        doc_list = [doc.model_dump(by_alias=True, stringify_extra_type=stringify_extra_type) for doc in doc_list]
         return {'doc_list': doc_list, 'total_count': total_count}
 
     @classmethod
